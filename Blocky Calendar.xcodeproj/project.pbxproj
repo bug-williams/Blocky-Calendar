@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B85FF8B261CEC82004AAAE1 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B85FF8A261CEC82004AAAE1 /* StorageManager.swift */; };
 		9BFC4E97261CEA99002FBD4A /* Blocky_CalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFC4E96261CEA99002FBD4A /* Blocky_CalendarApp.swift */; };
 		9BFC4E99261CEA99002FBD4A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFC4E98261CEA99002FBD4A /* ContentView.swift */; };
 		9BFC4E9B261CEA9B002FBD4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BFC4E9A261CEA9B002FBD4A /* Assets.xcassets */; };
 		9BFC4E9E261CEA9B002FBD4A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BFC4E9D261CEA9B002FBD4A /* Preview Assets.xcassets */; };
 		9BFC4EA9261CEA9B002FBD4A /* Blocky_CalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFC4EA8261CEA9B002FBD4A /* Blocky_CalendarTests.swift */; };
 		9BFC4EB4261CEA9B002FBD4A /* Blocky_CalendarUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFC4EB3261CEA9B002FBD4A /* Blocky_CalendarUITests.swift */; };
+		9BFC4EC6261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9BFC4EC4261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9B85FF8A261CEC82004AAAE1 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		9BFC4E93261CEA99002FBD4A /* Blocky Calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Blocky Calendar.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BFC4E96261CEA99002FBD4A /* Blocky_CalendarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blocky_CalendarApp.swift; sourceTree = "<group>"; };
 		9BFC4E98261CEA99002FBD4A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,6 +48,7 @@
 		9BFC4EAF261CEA9B002FBD4A /* Blocky CalendarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Blocky CalendarUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BFC4EB3261CEA9B002FBD4A /* Blocky_CalendarUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blocky_CalendarUITests.swift; sourceTree = "<group>"; };
 		9BFC4EB5261CEA9B002FBD4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9BFC4EC5261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Blocky_Calendar.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,8 @@
 			children = (
 				9BFC4E96261CEA99002FBD4A /* Blocky_CalendarApp.swift */,
 				9BFC4E98261CEA99002FBD4A /* ContentView.swift */,
+				9B85FF8A261CEC82004AAAE1 /* StorageManager.swift */,
+				9BFC4EC4261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodeld */,
 				9BFC4E9A261CEA9B002FBD4A /* Assets.xcassets */,
 				9BFC4E9F261CEA9B002FBD4A /* Info.plist */,
 				9BFC4E9C261CEA9B002FBD4A /* Preview Content */,
@@ -260,7 +266,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BFC4E99261CEA99002FBD4A /* ContentView.swift in Sources */,
+				9BFC4EC6261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodeld in Sources */,
 				9BFC4E97261CEA99002FBD4A /* Blocky_CalendarApp.swift in Sources */,
+				9B85FF8B261CEC82004AAAE1 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,6 +588,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9BFC4EC4261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9BFC4EC5261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodel */,
+			);
+			currentVersion = 9BFC4EC5261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodel */;
+			path = Blocky_Calendar.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9BFC4E8B261CEA99002FBD4A /* Project object */;
 }

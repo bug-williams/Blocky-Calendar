@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct Blocky_CalendarApp: App {
+    
+    let storageManager = StorageManager.shared
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.managedObjectContext, storageManager.container.viewContext)
         }
     }
+    
 }
