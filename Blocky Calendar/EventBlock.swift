@@ -20,6 +20,8 @@ struct EventBlock: View {
     let minimumDragOffset: CGFloat = 80
     @State var dragOffset: CGSize = CGSize.zero
     
+    @State var deleteButtonIsVisible: Bool = false
+    
     var body: some View {
         ZStack {
             HStack {
@@ -29,15 +31,14 @@ struct EventBlock: View {
                 }, label: {
                     Image(systemName: "trash.fill")
                         .font(.system(size: 17, weight: .bold))
-                        .frame(width: abs(-(dragOffset.width) - 4), height: 64)
+                        .frame(width: abs((deleteButtonIsVisible ? minimumDragOffset - dragOffset.width : -dragOffset.width) - 4), height: 64)
                         .foregroundColor(.white)
                         .background(Color.red)
                         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                 })
             }
-            .opacity((dragOffset != CGSize.zero && isEmpty == false) ? 1 : 0)
             .scaleEffect(
-                min(max(-dragOffset.width / minimumDragOffset, 0.5), 1),
+                min(max((deleteButtonIsVisible ? minimumDragOffset - dragOffset.width : -dragOffset.width) / minimumDragOffset, 0), 1),
                 anchor: .trailing
             )
             HStack(spacing: 16) {
@@ -72,6 +73,7 @@ struct EventBlock: View {
                 }
             }
             .offset(isEmpty ? CGSize.zero : dragOffset)
+            .offset(x: deleteButtonIsVisible ? -(minimumDragOffset) : 0)
             .simultaneousGesture(
                 DragGesture(minimumDistance: 16, coordinateSpace: .global)
                     .onChanged({ gesture in
@@ -81,11 +83,12 @@ struct EventBlock: View {
                     })
                     .onEnded({ (offset) in
                         withAnimation(.spring()) {
-                            if abs(dragOffset.width) < minimumDragOffset {
-                                dragOffset = CGSize.zero
+                            if abs(dragOffset.width) < minimumDragOffset || dragOffset.width > 0  {
+                                deleteButtonIsVisible = false
                             } else {
-                                dragOffset = CGSize(width: -(minimumDragOffset), height: 0)
+                                deleteButtonIsVisible = true
                             }
+                            dragOffset = CGSize.zero
                         }
                     })
             )
