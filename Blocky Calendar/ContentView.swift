@@ -8,73 +8,83 @@
 import SwiftUI
 import CoreData
 
-struct ContentView: View {
+struct ContentView: View, DataHanderDelegate {
     
-    // MARK: - Variables
-    
-    @Environment(\.managedObjectContext)
-    private var viewContext
+    @Environment (\.managedObjectContext) private var viewContext
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Event.block, ascending: true)])
-    private var events: FetchedResults<Event>
+    var events: FetchedResults<Event>
+    
+    // MARK: - States
+    
+    @State var createMenuIsVisible = false
+    @State var selectedEventBlock: Int?
     
     // MARK: - View Body
     
     var body: some View {
-        VStack {
-            ScrollView {
-                VStack {
+        ZStack {
+            // Event blocks
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 4) {
                     Text("BLOCKY")
-                        .font(.system(.headline, design: .monospaced))
+                        .font(.system(.largeTitle, design: .rounded))
                         .fontWeight(.black)
                         .foregroundColor(Color(UIColor.tertiaryLabel))
                         .padding(.bottom)
                     ForEach((0 ..< 72), id: \.self) { index in
-                        if events.contains(where: { (event) -> Bool in
+                        if events.contains(where: { event -> Bool in
                             if event.block == index { return true }
                             else { return false }
                         }) {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                    .frame(height: 64)
-                                    .foregroundColor(Color.accentColor)
-                                HStack {
-                                    Text(events.first(where: { $0.block == index })?.title ?? "")
-                                        .font(.system(.subheadline, design: .monospaced))
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.white)
-                                        .lineLimit(1)
-                                }
-                                .padding(24)
-                            }
+                            EventBlock(dataHandlerDelegate: self, title: events.first(where: { $0.block == index })?.title ?? "", block: index)
                         } else {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                    .frame(height: 64)
-                                    .foregroundColor(Color(UIColor.secondarySystemBackground))
-                                HStack {
-                                    Text("empty")
-                                        .font(.system(.subheadline, design: .monospaced))
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.secondary)
-                                        .lineLimit(1)
-                                }
-                                .padding(24)
-                            }
-                            .onTapGesture {
-                                addEvent(title: "Event", block: index)
-                            }
+                            EventBlock(dataHandlerDelegate: self, isEmpty: true, block: index)
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    selectedEventBlock = index
+                                    withAnimation(.spring()) {
+                                        createMenuIsVisible = true
+                                    }
+                                })
                         }
                     }
                 }
                 .padding()
             }
+            .scaleEffect(createMenuIsVisible ? 0.8 : 1)
+            // TODO: Status bar overlay
+            VStack {
+                Rectangle()
+                    .frame(width: UIScreen.main.bounds.size.width, height: StatusBarManager.shared.getStatusBarHeight())
+                    .foregroundColor(Color(UIColor.systemBackground))
+                Spacer()
+            }
+            .ignoresSafeArea()
+            // Overlay color
+            Rectangle()
+                .ignoresSafeArea()
+                .foregroundColor(.black)
+                .opacity(createMenuIsVisible ? 0.5 : 0)
+                .onTapGesture {
+                    selectedEventBlock = nil
+                    UIApplication.shared.endEditing()
+                    withAnimation(.spring()) {
+                        createMenuIsVisible = false
+                    }
+                }
+            // Create event menu
+            VStack {
+                CreateMenu(dataHandlerDelegate: self, createMenuIsVisible: $createMenuIsVisible, selectedEventBlock: $selectedEventBlock)
+                Spacer()
+            }
+            .padding(8)
+            .offset(y: createMenuIsVisible ? 0 : -UIScreen.main.bounds.size.height)
         }
     }
     
     // MARK: - Functions
     
-    private func saveContext() {
+    func saveContext() {
         do {
             try viewContext.save()
         } catch {
@@ -83,20 +93,28 @@ struct ContentView: View {
         }
     }
     
-    private func addEvent(title: String, block: Int) {
+    func addEvent(title: String, block: Int) {
         withAnimation {
             let newEvent = Event(context: viewContext)
             newEvent.title = title
             newEvent.block = Int16(block)
-            saveContext()
         }
+        saveContext()
     }
     
-    private func deleteEvent(offsets: IndexSet) {
+    func deleteEvent(offsets: IndexSet) {
         withAnimation {
             offsets.map { events[$0] } .forEach(viewContext.delete)
-            saveContext()
         }
+        saveContext()
+    }
+    
+    func getEventIndexFromBlock(block: Int) -> Int {
+        let index = events.firstIndex { event -> Bool in
+            if event.block == block { return true }
+            else { return false }
+        }
+        return index ?? 0
     }
     
 }
