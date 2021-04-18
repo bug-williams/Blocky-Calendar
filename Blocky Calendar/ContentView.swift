@@ -33,19 +33,21 @@ struct ContentView: View, DataHanderDelegate {
                         .foregroundColor(Color(UIColor.tertiaryLabel))
                         .padding(.bottom)
                     ForEach((0 ..< 72), id: \.self) { index in
-                        if events.contains(where: { event -> Bool in
-                            if event.block == index { return true }
-                            else { return false }
-                        }) {
-                            EventBlock(dataHandlerDelegate: self, title: events.first(where: { $0.block == index })?.title ?? "", block: index)
-                        } else {
-                            EventBlock(dataHandlerDelegate: self, isEmpty: true, block: index)
-                                .simultaneousGesture(TapGesture().onEnded {
-                                    selectedEventBlock = index
-                                    withAnimation(.spring()) {
-                                        createMenuIsVisible = true
-                                    }
-                                })
+                        if getCurrentBlock() <= index {
+                            if events.contains(where: { event -> Bool in
+                                if event.block == index { return true }
+                                else { return false }
+                            }) {
+                                EventBlock(dataHandlerDelegate: self, title: events.first(where: { $0.block == index })?.title ?? "", block: index)
+                            } else {
+                                EventBlock(dataHandlerDelegate: self, isEmpty: true, block: index)
+                                    .simultaneousGesture(TapGesture().onEnded {
+                                        selectedEventBlock = index
+                                        withAnimation(.spring()) {
+                                            createMenuIsVisible = true
+                                        }
+                                    })
+                            }
                         }
                     }
                 }
@@ -82,7 +84,16 @@ struct ContentView: View, DataHanderDelegate {
         }
     }
     
-    // MARK: - Functions
+    // MARK: - Utility Functions
+    
+    func getCurrentBlock() -> Int {
+        let currentHour = Calendar.current.component(.hour, from: Date())
+        let currentMinute = Calendar.current.component(.minute, from: Date())
+        let currentBlock: Int = (currentHour * 3) + currentMinute / 20
+        return currentBlock
+    }
+    
+    // MARK: - dataHandlerDelegate Functions
     
     func saveContext() {
         do {
