@@ -26,6 +26,8 @@ struct ContentView: View, DataHanderDelegate {
     @State var isToday = false
     @State var selectedTime = 0  // 24 hour clock
     
+    @State var isShowingClearCalendarAlert = false
+    
     // MARK: - View Body
     
     var body: some View {
@@ -50,14 +52,13 @@ struct ContentView: View, DataHanderDelegate {
                     Spacer()
                     Menu {
                         Button(action: {
-                            clearEvents()
+                            isShowingClearCalendarAlert.toggle()
                         }) {
                             HStack {
                                 Text("Clear Calendar")
                                 Image(systemName: "clear")
                             }
                         }
-                        Divider()
                         Button(action: {
                             
                         }) {
@@ -69,6 +70,16 @@ struct ContentView: View, DataHanderDelegate {
                     } label: {
                         Image(systemName: "ellipsis.circle.fill")
                             .font(.system(size: 28, weight: .bold))
+                    }
+                    .alert(isPresented: $isShowingClearCalendarAlert) {
+                        Alert(
+                            title: Text("Are you sure you want to clear the calendar?"),
+                            message: Text("There is no way to undo this action."),
+                            primaryButton: .destructive(Text("Clear")) {
+                                clearEvents()
+                            },
+                            secondaryButton: .cancel()
+                        )
                     }
                 }
                 .padding()
