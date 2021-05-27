@@ -29,63 +29,67 @@ struct ContentView: View, DataHanderDelegate {
     var body: some View {
         ZStack {
             // Event blocks
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 4) {
-                    HStack(alignment: .center) {
-                        Rectangle()
-                            .frame(width: 28, height: 28)
-                            .foregroundColor(.clear)
-                        Spacer()
-                        Text("BLOCKY")
-                            .font(.system(.largeTitle, design: .rounded))
-                            .fontWeight(.black)
-                            .foregroundColor(Color.primary)
-                        Spacer()
-                        Menu {
-                            Button(action: {
-                                clearEvents()
-                            }) {
-                                HStack {
-                                    Text("Clear Calendar")
-                                    Image(systemName: "clear.fill")
-                                }
-                            }
-                            Divider()
-                            Button(action: {
-                                
-                            }) {
-                                HStack {
-                                    Text("Settings")
-                                    Image(systemName: "gearshape.fill")
-                                }
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis.circle.fill").font(.system(size: 28, weight: .bold))
-                        }
-                    }
-                    .padding(.bottom)
-                    ForEach((0 ..< 72), id: \.self) { index in
-                        if getCurrentBlock() <= index {
-                            if events.contains(where: { event -> Bool in
-                                if event.block == index { return true }
-                                else { return false }
-                            }) {
-                                EventBlock(dataHandlerDelegate: self, title: events.first(where: { $0.block == index })?.title ?? "", block: index)
-                            } else {
-                                EventBlock(dataHandlerDelegate: self, isEmpty: true, block: index)
-                                    .simultaneousGesture(TapGesture().onEnded {
-                                        selectedEventBlock = index
-                                        withAnimation(.spring()) {
-                                            createMenuIsVisible = true
-                                        }
-                                    })
+            VStack(spacing: 0) {
+                HStack(alignment: .center) {
+                    Rectangle()
+                        .frame(width: 28, height: 28)
+                        .foregroundColor(.clear)
+                    Spacer()
+                    Text("Blocks")
+                        .font(.system(.largeTitle, design: .rounded))
+                        .fontWeight(.black)
+                        .foregroundColor(Color.primary)
+                    Spacer()
+                    Menu {
+                        Button(action: {
+                            clearEvents()
+                        }) {
+                            HStack {
+                                Text("Clear Calendar")
+                                Image(systemName: "clear.fill")
                             }
                         }
+                        Divider()
+                        Button(action: {
+                            
+                        }) {
+                            HStack {
+                                Text("Settings")
+                                Image(systemName: "gearshape.fill")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle.fill").font(.system(size: 28, weight: .bold))
                     }
                 }
                 .padding()
+                Divider()
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 4) {
+                        ForEach((0 ..< 72), id: \.self) { index in
+                            if getCurrentBlock() <= index {
+                                if events.contains(where: { event -> Bool in
+                                    if event.block == index { return true }
+                                    else { return false }
+                                }) {
+                                    EventBlock(dataHandlerDelegate: self, title: events.first(where: { $0.block == index })?.title ?? "", block: index)
+                                } else {
+                                    EventBlock(dataHandlerDelegate: self, isEmpty: true, block: index)
+                                        .simultaneousGesture(TapGesture().onEnded {
+                                            selectedEventBlock = index
+                                            withAnimation(.spring()) {
+                                                createMenuIsVisible = true
+                                            }
+                                        })
+                                }
+                            }
+                        }
+                    }
+                    .padding()
+                }
+                .scaleEffect(createMenuIsVisible ? 0.8 : 1)
+
             }
-            .scaleEffect(createMenuIsVisible ? 0.8 : 1)
             // TODO: Status bar overlay
             VStack {
                 Rectangle()
