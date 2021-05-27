@@ -15,6 +15,8 @@ struct ContentView: View, DataHanderDelegate {
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Event.block, ascending: true)])
     var events: FetchedResults<Event>
     
+    let date = Date()
+    
     // MARK: - States
     
     @State var createMenuIsVisible = false
@@ -30,15 +32,21 @@ struct ContentView: View, DataHanderDelegate {
         ZStack {
             // Event blocks
             VStack(spacing: 0) {
-                HStack(alignment: .center) {
-                    Rectangle()
-                        .frame(width: 28, height: 28)
-                        .foregroundColor(.clear)
-                    Spacer()
-                    Text("Blocks")
-                        .font(.system(.largeTitle, design: .rounded))
-                        .fontWeight(.black)
-                        .foregroundColor(Color.primary)
+                HStack(alignment: .center, spacing: 16) {
+                    Image(systemName: "calendar")
+                        .font(.system(size: 32, weight: .regular))
+                    VStack(alignment: .leading) {
+                        Text("\(date.day)")
+                            .font(.system(.title2, design: .rounded))
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.primary)
+                            .lineLimit(1)
+                        Text("\(date.month) \(date.dayOfMonth), \(date.year)")
+                            .font(.system(.subheadline, design: .rounded))
+                            .fontWeight(.bold)
+                            .foregroundColor(Color.secondary)
+                            .lineLimit(1)
+                    }
                     Spacer()
                     Menu {
                         Button(action: {
@@ -46,7 +54,7 @@ struct ContentView: View, DataHanderDelegate {
                         }) {
                             HStack {
                                 Text("Clear Calendar")
-                                Image(systemName: "clear.fill")
+                                Image(systemName: "clear")
                             }
                         }
                         Divider()
@@ -55,11 +63,12 @@ struct ContentView: View, DataHanderDelegate {
                         }) {
                             HStack {
                                 Text("Settings")
-                                Image(systemName: "gearshape.fill")
+                                Image(systemName: "gearshape")
                             }
                         }
                     } label: {
-                        Image(systemName: "ellipsis.circle.fill").font(.system(size: 28, weight: .bold))
+                        Image(systemName: "ellipsis.circle.fill")
+                            .font(.system(size: 28, weight: .bold))
                     }
                 }
                 .padding()
@@ -87,9 +96,8 @@ struct ContentView: View, DataHanderDelegate {
                     }
                     .padding()
                 }
-                .scaleEffect(createMenuIsVisible ? 0.8 : 1)
-
             }
+            .scaleEffect(createMenuIsVisible ? 0.8 : 1)
             // TODO: Status bar overlay
             VStack {
                 Rectangle()

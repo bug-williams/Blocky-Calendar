@@ -14,6 +14,7 @@
 		9BE31F16261D08CE00F0E161 /* EventBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE31F15261D08CE00F0E161 /* EventBlock.swift */; };
 		9BE31F1E261D0B2200F0E161 /* CreateMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE31F1D261D0B2200F0E161 /* CreateMenu.swift */; };
 		9BE31F23261D0C9900F0E161 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE31F22261D0C9900F0E161 /* CustomTextField.swift */; };
+		9BE3DA27265F29E600385CA7 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE3DA26265F29E600385CA7 /* Date+Extensions.swift */; };
 		9BFC4E97261CEA99002FBD4A /* Blocky_CalendarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFC4E96261CEA99002FBD4A /* Blocky_CalendarApp.swift */; };
 		9BFC4E99261CEA99002FBD4A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFC4E98261CEA99002FBD4A /* ContentView.swift */; };
 		9BFC4E9B261CEA9B002FBD4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BFC4E9A261CEA9B002FBD4A /* Assets.xcassets */; };
@@ -48,6 +49,7 @@
 		9BE31F15261D08CE00F0E161 /* EventBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventBlock.swift; sourceTree = "<group>"; };
 		9BE31F1D261D0B2200F0E161 /* CreateMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMenu.swift; sourceTree = "<group>"; };
 		9BE31F22261D0C9900F0E161 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		9BE3DA26265F29E600385CA7 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		9BFC4E93261CEA99002FBD4A /* Blocky Calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Blocky Calendar.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BFC4E96261CEA99002FBD4A /* Blocky_CalendarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blocky_CalendarApp.swift; sourceTree = "<group>"; };
 		9BFC4E98261CEA99002FBD4A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -88,6 +90,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9BE3DA28265F2A6800385CA7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9BE3DA26265F29E600385CA7 /* Date+Extensions.swift */,
+				9B209C38261E5E1C00936D50 /* UIApplication+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		9BFC4E8A261CEA99002FBD4A = {
 			isa = PBXGroup;
 			children = (
@@ -116,10 +127,10 @@
 				9BFC4E98261CEA99002FBD4A /* ContentView.swift */,
 				9B209C4B2620E23000936D50 /* DataHandlerProtocol.swift */,
 				9BE31F1D261D0B2200F0E161 /* CreateMenu.swift */,
-				9B209C38261E5E1C00936D50 /* UIApplication+Extensions.swift */,
 				9BE31F22261D0C9900F0E161 /* CustomTextField.swift */,
 				9BE31F15261D08CE00F0E161 /* EventBlock.swift */,
 				9B85FF8A261CEC82004AAAE1 /* StorageManager.swift */,
+				9BE3DA28265F2A6800385CA7 /* Extensions */,
 				9BFC4EC4261CEAD4002FBD4A /* Blocky_Calendar.xcdatamodeld */,
 				9BFC4E9A261CEA9B002FBD4A /* Assets.xcassets */,
 				9BFC4E9F261CEA9B002FBD4A /* Info.plist */,
@@ -284,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B209C3E261E77C600936D50 /* StatusBarManager.swift in Sources */,
+				9BE3DA27265F29E600385CA7 /* Date+Extensions.swift in Sources */,
 				9BE31F23261D0C9900F0E161 /* CustomTextField.swift in Sources */,
 				9BE31F16261D08CE00F0E161 /* EventBlock.swift in Sources */,
 				9BFC4E99261CEA99002FBD4A /* ContentView.swift in Sources */,
