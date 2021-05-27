@@ -20,6 +20,10 @@ struct ContentView: View, DataHanderDelegate {
     @State var createMenuIsVisible = false
     @State var selectedEventBlock: Int?
     
+    @State var lastDay: Date = Date()
+    @State var isToday = false
+    @State var selectedTime = 0  // 24 hour clock
+    
     // MARK: - View Body
     
     var body: some View {
@@ -27,11 +31,39 @@ struct ContentView: View, DataHanderDelegate {
             // Event blocks
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 4) {
-                    Text("BLOCKY")
-                        .font(.system(.largeTitle, design: .rounded))
-                        .fontWeight(.black)
-                        .foregroundColor(Color(UIColor.tertiaryLabel))
-                        .padding(.bottom)
+                    HStack(alignment: .center) {
+                        Rectangle()
+                            .frame(width: 28, height: 28)
+                            .foregroundColor(.clear)
+                        Spacer()
+                        Text("BLOCKY")
+                            .font(.system(.largeTitle, design: .rounded))
+                            .fontWeight(.black)
+                            .foregroundColor(Color.primary)
+                        Spacer()
+                        Menu {
+                            Button(action: {
+                                clearEvents()
+                            }) {
+                                HStack {
+                                    Text("Clear Calendar")
+                                    Image(systemName: "clear.fill")
+                                }
+                            }
+                            Divider()
+                            Button(action: {
+                                
+                            }) {
+                                HStack {
+                                    Text("Settings")
+                                    Image(systemName: "gearshape.fill")
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle.fill").font(.system(size: 28, weight: .bold))
+                        }
+                    }
+                    .padding(.bottom)
                     ForEach((0 ..< 72), id: \.self) { index in
                         if getCurrentBlock() <= index {
                             if events.contains(where: { event -> Bool in
@@ -82,6 +114,25 @@ struct ContentView: View, DataHanderDelegate {
             .padding(8)
             .offset(y: createMenuIsVisible ? 0 : -UIScreen.main.bounds.size.height)
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+            // store the date whenever you go into background
+            UserDefaults.standard.set(Date(), forKey: "lastDay")
+            isToday = false
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            // try to retrieve the date when you come back from background
+            if let tempDate = UserDefaults.standard.object(forKey: "lastDay") {
+                self.lastDay = tempDate as! Date
+                if Calendar.current.isDate(Date(), inSameDayAs: self.lastDay) {
+                    self.isToday = true
+                }
+                if let thisHour = Calendar.current.dateComponents([.hour], from: Date()).hour {
+                    if !isToday && thisHour >= self.selectedTime {
+                        clearEvents()
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - Utility Functions
@@ -118,6 +169,12 @@ struct ContentView: View, DataHanderDelegate {
             offsets.map { events[$0] } .forEach(viewContext.delete)
         }
         saveContext()
+    }
+    
+    func clearEvents() {
+        withAnimation {
+            events.forEach(viewContext.delete)
+        }
     }
     
     func getEventIndexFromBlock(block: Int) -> Int {
