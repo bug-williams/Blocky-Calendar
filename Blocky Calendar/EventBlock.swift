@@ -63,13 +63,13 @@ struct EventBlock: View {
                             }
                         } else {
                             Text(title)
-                                .font(.system(.subheadline, design: .rounded))
+                                .font(.system(.headline, design: .rounded))
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white)
                                 .lineLimit(1)
                         }
                     }
-                    .padding(24)
+                    .padding(.horizontal, 24)
                 }
             }
             .offset(isEmpty ? CGSize.zero : dragOffset)

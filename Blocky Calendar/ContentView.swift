@@ -27,6 +27,7 @@ struct ContentView: View, DataHanderDelegate {
     @State var selectedTime = 0  // 24 hour clock
     
     @State var isShowingClearCalendarAlert = false
+    @State var showSettingsPage = false
     
     // MARK: - View Body
     
@@ -39,7 +40,7 @@ struct ContentView: View, DataHanderDelegate {
                         .font(.system(size: 32, weight: .regular))
                     VStack(alignment: .leading) {
                         Text("\(date.day)")
-                            .font(.system(.title2, design: .rounded))
+                            .font(.system(.headline, design: .rounded))
                             .fontWeight(.bold)
                             .foregroundColor(Color.primary)
                             .lineLimit(1)
@@ -60,7 +61,7 @@ struct ContentView: View, DataHanderDelegate {
                             }
                         }
                         Button(action: {
-                            
+                            showSettingsPage.toggle()
                         }) {
                             HStack {
                                 Text("Settings")
@@ -94,13 +95,15 @@ struct ContentView: View, DataHanderDelegate {
                                 }) {
                                     EventBlock(dataHandlerDelegate: self, title: events.first(where: { $0.block == index })?.title ?? "", block: index)
                                 } else {
-                                    EventBlock(dataHandlerDelegate: self, isEmpty: true, block: index)
-                                        .simultaneousGesture(TapGesture().onEnded {
-                                            selectedEventBlock = index
-                                            withAnimation(.spring()) {
-                                                createMenuIsVisible = true
-                                            }
-                                        })
+                                    Button(action: {
+                                        selectedEventBlock = index
+                                        withAnimation(.spring()) {
+                                            createMenuIsVisible = true
+                                        }
+                                    }, label: {
+                                        EventBlock(dataHandlerDelegate: self, isEmpty: true, block: index)
+                                    })
+                                    
                                 }
                             }
                         }
@@ -136,6 +139,9 @@ struct ContentView: View, DataHanderDelegate {
             }
             .padding(8)
             .offset(y: createMenuIsVisible ? 0 : -UIScreen.main.bounds.size.height)
+        }
+        .sheet(isPresented: $showSettingsPage) {
+            SettingsPage(showSettingsPage: $showSettingsPage)
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
             // store the date whenever you go into background

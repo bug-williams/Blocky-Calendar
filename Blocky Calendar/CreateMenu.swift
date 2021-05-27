@@ -38,7 +38,6 @@ struct CreateMenu: View {
                 }, label: {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(Color(UIColor.tertiaryLabel))
                 })
             }
             .padding(.bottom)
