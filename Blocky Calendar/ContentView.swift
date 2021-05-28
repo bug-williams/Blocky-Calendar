@@ -15,9 +15,11 @@ struct ContentView: View, DataHanderDelegate {
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Event.block, ascending: true)])
     var events: FetchedResults<Event>
     
-    let date = Date()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     // MARK: - States
+    
+    @State var date: Date = Date()
     
     @State var createMenuIsVisible = false
     @State var selectedEventBlock: Int?
@@ -37,7 +39,7 @@ struct ContentView: View, DataHanderDelegate {
             VStack(spacing: 0) {
                 HStack(alignment: .center, spacing: 16) {
                     Image(systemName: "calendar")
-                        .font(.system(size: 32, weight: .regular))
+                        .font(.system(size: 32, weight: .semibold))
                     VStack(alignment: .leading) {
                         Text("\(date.day)")
                             .font(.system(.headline, design: .rounded))
@@ -85,6 +87,7 @@ struct ContentView: View, DataHanderDelegate {
                 }
                 .padding()
                 Divider()
+                    .padding(.horizontal)
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 4) {
                         ForEach((0 ..< 72), id: \.self) { index in
@@ -143,6 +146,11 @@ struct ContentView: View, DataHanderDelegate {
         .sheet(isPresented: $showSettingsPage) {
             SettingsPage(showSettingsPage: $showSettingsPage)
         }
+        .onReceive(timer) { _ in
+            withAnimation(.spring()) {
+                date = Date()
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
             // store the date whenever you go into background
             UserDefaults.standard.set(Date(), forKey: "lastDay")
@@ -160,6 +168,10 @@ struct ContentView: View, DataHanderDelegate {
                         clearEvents()
                     }
                 }
+            }
+            // update view
+            withAnimation(.spring()) {
+                date = Date()
             }
         }
     }
