@@ -96,7 +96,12 @@ struct ContentView: View, DataHanderDelegate {
                                     if event.block == index { return true }
                                     else { return false }
                                 }) {
-                                    EventBlock(dataHandlerDelegate: self, title: events.first(where: { $0.block == index })?.title ?? "", block: index)
+                                    EventBlock(
+                                        dataHandlerDelegate: self,
+                                        title: getFirstInstanceOfEvent(index: index)?.title ?? "",
+                                        block: index,
+                                        color: Int(getFirstInstanceOfEvent(index: index)?.color ?? 0)
+                                    )
                                 } else {
                                     Button(action: {
                                         selectedEventBlock = index
@@ -104,7 +109,11 @@ struct ContentView: View, DataHanderDelegate {
                                             createMenuIsVisible = true
                                         }
                                     }, label: {
-                                        EventBlock(dataHandlerDelegate: self, isEmpty: true, block: index)
+                                        EventBlock(
+                                            dataHandlerDelegate: self,
+                                            isEmpty: true,
+                                            block: index
+                                        )
                                     })
                                     
                                 }
@@ -137,11 +146,11 @@ struct ContentView: View, DataHanderDelegate {
                 }
             // Create event menu
             VStack {
-                CreateMenu(dataHandlerDelegate: self, createMenuIsVisible: $createMenuIsVisible, selectedEventBlock: $selectedEventBlock)
                 Spacer()
+                CreateMenu(dataHandlerDelegate: self, createMenuIsVisible: $createMenuIsVisible, selectedEventBlock: $selectedEventBlock)
             }
             .padding(8)
-            .offset(y: createMenuIsVisible ? 0 : -UIScreen.main.bounds.size.height)
+            .offset(y: createMenuIsVisible ? 0 : UIScreen.main.bounds.size.height)
         }
         .sheet(isPresented: $showSettingsPage) {
             SettingsPage(showSettingsPage: $showSettingsPage)
@@ -185,6 +194,10 @@ struct ContentView: View, DataHanderDelegate {
         return currentBlock
     }
     
+    func getFirstInstanceOfEvent(index: Int) -> Event? {
+        return events.first(where: { $0.block == index })
+    }
+    
     // MARK: - dataHandlerDelegate Functions
     
     func saveContext() {
@@ -196,11 +209,12 @@ struct ContentView: View, DataHanderDelegate {
         }
     }
     
-    func addEvent(title: String, block: Int) {
+    func addEvent(title: String, block: Int, color: Int) {
         withAnimation {
             let newEvent = Event(context: viewContext)
             newEvent.title = title
             newEvent.block = Int16(block)
+            newEvent.color = Int16(color)
         }
         saveContext()
     }

@@ -16,6 +16,9 @@ struct EventBlock: View {
     var isEmpty: Bool = false
     var title: String = ""
     var block: Int = 0
+    var color: Int = 0
+    
+    let colors: [Color] = [.pink, .orange, .yellow, .green, .blue, .purple, .gray]
     
     let minimumDragOffset: CGFloat = 80
     @State var dragOffset: CGSize = CGSize.zero
@@ -51,7 +54,7 @@ struct EventBlock: View {
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 24, style: .continuous)
                         .frame(height: 64)
-                        .foregroundColor(isEmpty ? Color(UIColor.secondarySystemBackground) : Color.accentColor)
+                        .foregroundColor(isEmpty ? Color(UIColor.secondarySystemBackground) : colors[color])
                     HStack {
                         if isEmpty {
                             HStack {
@@ -77,13 +80,15 @@ struct EventBlock: View {
             .simultaneousGesture(
                 DragGesture(minimumDistance: 16, coordinateSpace: .global)
                     .onChanged({ gesture in
-                        withAnimation(.interactiveSpring()) {
-                            dragOffset.width = gesture.translation.width
+                        if !isEmpty {
+                            withAnimation(.interactiveSpring()) {
+                                dragOffset.width = gesture.translation.width
+                            }
                         }
                     })
                     .onEnded({ (offset) in
                         withAnimation(.spring()) {
-                            if abs(dragOffset.width) < minimumDragOffset || dragOffset.width > 0  {
+                            if abs(dragOffset.width) < minimumDragOffset || dragOffset.width > 0 || isEmpty  {
                                 deleteButtonIsVisible = false
                             } else {
                                 deleteButtonIsVisible = true

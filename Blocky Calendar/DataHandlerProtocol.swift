@@ -11,7 +11,7 @@ import CoreData
 
 protocol DataHanderDelegate {
     
-    func addEvent(title: String, block: Int)
+    func addEvent(title: String, block: Int, color: Int)
     func deleteEvent(offsets: IndexSet)
     func getEventIndexFromBlock(block: Int) -> Int
     
