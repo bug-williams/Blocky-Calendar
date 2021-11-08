@@ -14,6 +14,7 @@ struct EventBlock: View {
     var dataHandlerDelegate: DataHanderDelegate
     
     var isEmpty: Bool = false
+    var hasPassed: Bool = false
     var title: String = ""
     var block: Int = 0
     var color: Int = 0
@@ -34,10 +35,10 @@ struct EventBlock: View {
                 }, label: {
                     Image(systemName: "trash.fill")
                         .font(.system(size: 17, weight: .bold))
-                        .frame(width: abs((deleteButtonIsVisible ? minimumDragOffset - dragOffset.width : -dragOffset.width) - 4), height: 64)
+                        .frame(width: abs((deleteButtonIsVisible ? minimumDragOffset - dragOffset.width : -dragOffset.width) - 4), height: 56)
                         .foregroundColor(.white)
                         .background(Color.red)
-                        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
                 })
             }
             .scaleEffect(
@@ -52,9 +53,9 @@ struct EventBlock: View {
                     .frame(width: 52)
                     .padding(.horizontal, -8)
                 ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .frame(height: 64)
-                        .foregroundColor(isEmpty ? Color(UIColor.secondarySystemBackground) : colors[color])
+                    RoundedRectangle(cornerRadius: 28, style: .continuous)
+                        .frame(height: 56)
+                        .foregroundColor(isEmpty || hasPassed ? Color(UIColor.secondarySystemBackground) : colors[color])
                     HStack {
                         if isEmpty {
                             HStack {
@@ -68,11 +69,11 @@ struct EventBlock: View {
                             Text(title)
                                 .font(.system(.headline, design: .rounded))
                                 .fontWeight(.semibold)
-                                .foregroundColor(.white)
+                                .foregroundColor(hasPassed ? .secondary : .white)
                                 .lineLimit(1)
                         }
                     }
-                    .padding(.horizontal, 24)
+                    .padding(.horizontal, 28)
                 }
             }
             .offset(isEmpty ? CGSize.zero : dragOffset)

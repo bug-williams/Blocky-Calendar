@@ -87,15 +87,32 @@ struct ContentView: View, DataHanderDelegate {
                 }
                 .padding()
                 Divider()
-                    .padding(.horizontal)
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 4) {
                         ForEach((0 ..< 72), id: \.self) { index in
-                            if getCurrentBlock() <= index {
-                                if events.contains(where: { event -> Bool in
-                                    if event.block == index { return true }
-                                    else { return false }
-                                }) {
+                            if getCurrentBlock() == index {
+                                HStack(alignment: .center, spacing: 16) {
+                                    Text("Now")
+                                        .font(.system(.caption, design: .rounded))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.accentColor)
+                                        .lineLimit(1)
+                                        .frame(width: 52, height: 0)
+                                        .padding(.horizontal, -8)
+                                    VStack {
+                                        Divider()
+                                            .frame(height: 2)
+                                            .background(Color.accentColor)
+                                            .cornerRadius(1)
+                                    }
+                                }
+                                .padding(.vertical, 12)
+                            }
+                            if events.contains(where: { event -> Bool in
+                                if event.block == index { return true }
+                                else { return false }
+                            }) {
+                                if getCurrentBlock() <= index {
                                     EventBlock(
                                         dataHandlerDelegate: self,
                                         title: getFirstInstanceOfEvent(index: index)?.title ?? "",
@@ -103,6 +120,16 @@ struct ContentView: View, DataHanderDelegate {
                                         color: Int(getFirstInstanceOfEvent(index: index)?.color ?? 0)
                                     )
                                 } else {
+                                    EventBlock(
+                                        dataHandlerDelegate: self,
+                                        hasPassed: true,
+                                        title: getFirstInstanceOfEvent(index: index)?.title ?? "",
+                                        block: index,
+                                        color: Int(getFirstInstanceOfEvent(index: index)?.color ?? 0)
+                                    )
+                                }
+                            } else {
+                                if getCurrentBlock() <= index {
                                     Button(action: {
                                         selectedEventBlock = index
                                         withAnimation(.spring()) {
@@ -115,7 +142,6 @@ struct ContentView: View, DataHanderDelegate {
                                             block: index
                                         )
                                     })
-                                    
                                 }
                             }
                         }

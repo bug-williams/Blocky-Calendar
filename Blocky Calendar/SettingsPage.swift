@@ -28,7 +28,6 @@ struct SettingsPage: View {
                         Text("Done")
                             .font(.system(.headline, design: .rounded))
                             .fontWeight(.bold)
-                        
                     })
                 }
             }
