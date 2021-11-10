@@ -10,7 +10,8 @@ import CoreData
 
 struct ContentView: View, DataHanderDelegate {
     
-    @Environment (\.managedObjectContext) private var viewContext
+    @Environment(\.managedObjectContext) private var viewContext
+    @Environment(\.colorScheme) var colorScheme
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Event.block, ascending: true)])
     var events: FetchedResults<Event>
@@ -161,8 +162,8 @@ struct ContentView: View, DataHanderDelegate {
             // Overlay color
             Rectangle()
                 .ignoresSafeArea()
-                .foregroundColor(.black)
-                .opacity(createMenuIsVisible ? 0.5 : 0)
+                .foregroundColor(Color(colorScheme == .light ? UIColor.secondarySystemBackground : UIColor.systemBackground))
+                .opacity(createMenuIsVisible ? 0.8 : 0)
                 .onTapGesture {
                     selectedEventBlock = nil
                     UIApplication.shared.endEditing()
@@ -170,7 +171,7 @@ struct ContentView: View, DataHanderDelegate {
                         createMenuIsVisible = false
                     }
                 }
-            // Create event menu
+            // "Create event" menu
             VStack {
                 Spacer()
                 CreateMenu(dataHandlerDelegate: self, createMenuIsVisible: $createMenuIsVisible, selectedEventBlock: $selectedEventBlock)

@@ -38,11 +38,14 @@ struct EventBlock: View {
                         .frame(width: abs((deleteButtonIsVisible ? minimumDragOffset - dragOffset.width : -dragOffset.width) - 4), height: 56)
                         .foregroundColor(.white)
                         .background(Color.red)
-                        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 })
             }
+            .opacity(
+                min(max((deleteButtonIsVisible ? minimumDragOffset - dragOffset.width : -dragOffset.width) / minimumDragOffset, 0), 1)
+            )
             .scaleEffect(
-                min(max((deleteButtonIsVisible ? minimumDragOffset - dragOffset.width : -dragOffset.width) / minimumDragOffset, 0), 1),
+                min(max((deleteButtonIsVisible ? minimumDragOffset - dragOffset.width : -dragOffset.width) / minimumDragOffset, 0.7), 1),
                 anchor: .trailing
             )
             HStack(spacing: 16) {
@@ -53,7 +56,7 @@ struct EventBlock: View {
                     .frame(width: 52)
                     .padding(.horizontal, -8)
                 ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 28, style: .continuous)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .frame(height: 56)
                         .foregroundColor(isEmpty || hasPassed ? Color(UIColor.secondarySystemBackground) : colors[color])
                     HStack {
@@ -73,7 +76,7 @@ struct EventBlock: View {
                                 .lineLimit(1)
                         }
                     }
-                    .padding(.horizontal, 28)
+                    .padding(.horizontal, 24)
                 }
             }
             .offset(isEmpty ? CGSize.zero : dragOffset)
