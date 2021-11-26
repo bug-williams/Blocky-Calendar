@@ -25,7 +25,8 @@ struct CustomTextField: View {
             }
             TextField(placeholder, text: $textFieldValue)
                 .font(.system(.body, design: .rounded))
-                .padding(16)
+                .frame(height: 56)
+                .padding(.horizontal, 24)
                 .background(Color(UIColor.tertiarySystemFill))
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }

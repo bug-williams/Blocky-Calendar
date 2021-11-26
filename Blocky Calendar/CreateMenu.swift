@@ -39,11 +39,13 @@ struct CreateMenu: View {
                 }, label: {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 28, weight: .bold))
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(Color(UIColor.secondaryLabel), Color(UIColor.secondarySystemFill))
                 })
             }
             .padding(.bottom)
             VStack(alignment: .leading) {
-                Text("NAME")
+                Text("TITLE")
                     .font(.system(.caption, design: .rounded))
                     .fontWeight(.semibold)
                     .foregroundColor(.secondary)
@@ -81,8 +83,7 @@ struct CreateMenu: View {
                 Text("Create")
                     .font(.system(.headline, design: .rounded))
                     .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, minHeight: 54)
                     .background(Color.accentColor)
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             })

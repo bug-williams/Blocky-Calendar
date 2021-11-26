@@ -60,9 +60,10 @@ struct ContentView: View, DataHanderDelegate {
                         }) {
                             HStack {
                                 Text("Clear Calendar")
-                                Image(systemName: "clear")
+                                Image(systemName: "trash")
                             }
                         }
+                        Divider()
                         Button(action: {
                             showSettingsPage.toggle()
                         }) {
@@ -74,6 +75,7 @@ struct ContentView: View, DataHanderDelegate {
                     } label: {
                         Image(systemName: "ellipsis.circle.fill")
                             .font(.system(size: 28, weight: .bold))
+                            .symbolRenderingMode(.multicolor)
                     }
                     .alert(isPresented: $isShowingClearCalendarAlert) {
                         Alert(
@@ -274,5 +276,6 @@ struct ContentView: View, DataHanderDelegate {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            
     }
 }
